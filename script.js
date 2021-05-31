@@ -80,7 +80,7 @@ info.onAdd = function (map) {
 info.update = function (property) {
     this._div.innerHTML = '<h4>US Population Density</h4>' + (property ?
         '<b>' + property.name + '</b><br />' + property.density + ' people / mi<sup>2</sup>'
-        : 'Click over a state');
+        : '');
 };
 
 info.addTo(map);
