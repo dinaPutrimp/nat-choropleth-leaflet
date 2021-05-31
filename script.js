@@ -50,11 +50,11 @@ function onEachFeature(feature, layer) {
 function openDetail(e) {
     var layer = e.target;
 
-    // layer.setStyle({
-    //     weight: 3,
-    //     opacity: 0.3,
-    //     fillOpacity: 0.9
-    // });
+    layer.setStyle({
+        weight: 3,
+        opacity: 0.3,
+//         fillOpacity: 0.9
+    });
 
 
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
