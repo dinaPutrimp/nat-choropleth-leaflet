@@ -102,9 +102,9 @@ info.addTo(map);
 
 //Layer Control
 L.control.layers({
-    'Mapbox Streets': L.mapbox.styleLayer('mapbox://styles/mapbox/streets-v11').addTo(map),
-    'Mapbox Light': L.mapbox.styleLayer('mapbox://styles/mapbox/light-v10'),
-    'Mapbox Outdoors': L.mapbox.styleLayer('mapbox://styles/mapbox/outdoors-v11')
+    'Streets': L.mapbox.styleLayer('mapbox://styles/mapbox/streets-v11').addTo(map),
+    'Light': L.mapbox.styleLayer('mapbox://styles/mapbox/light-v10'),
+    'Outdoors': L.mapbox.styleLayer('mapbox://styles/mapbox/outdoors-v11')
 }).addTo(map);
 
 
