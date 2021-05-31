@@ -42,7 +42,8 @@ function getColor(dens) {
 
 function onEachFeature(feature, layer) {
     layer.on({
-        click: openDetail
+        mouseover: openDetail,
+        mouseout: removeMark
     });
 }
 
@@ -53,7 +54,7 @@ function openDetail(e) {
     layer.setStyle({
         weight: 3,
         opacity: 0.3,
-//         fillOpacity: 0.9
+        //         fillOpacity: 0.9
     });
 
 
@@ -62,8 +63,20 @@ function openDetail(e) {
     }
 
     info.update(layer.feature.properties);
+}
 
+//remove mark style
+function removeMark(e) {
+    let lay = e.target;
 
+    lay.setStyle({
+        weight: 2,
+        opacity: 0.2,
+        color: 'black',
+        fillOpacity: 0.7
+    });
+
+    info.update();
 }
 
 
