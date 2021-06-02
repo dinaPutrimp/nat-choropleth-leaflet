@@ -1,0 +1,81 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    min-height: 100vh;
+}
+
+#map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    /* z-index: -1; */
+}
+
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
+
+.search-container{
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    width: 400px;
+    z-index: 100;
+}
+
+.search-container input{
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+.search-container input:focus{
+    outline: none;
+}
+
+.search-links{
+    width: 105%;
+    height: 450px;
+    border-radius: 3px;
+    overflow: auto;
+    position: relative;
+}
+
+.link{
+    background-color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    line-height: 5px;
+}
+
+.link .location-name{
+    text-decoration: none;
+    color: black;
+}
+
+/* .fa-times{
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+    padding: 8px 10px;
+} */
+
+/* .fa-times:hover{
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+} */
