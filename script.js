@@ -3,6 +3,11 @@ var map = L.mapbox.map('map')
     .setView([37.8, -96], 4)
     .addLayer(L.mapbox.styleLayer('mapbox://styles/mapbox/streets-v11'));
 
+// control position
+map.zoomControl.setPosition('bottomleft');
+
+
+
 var getDataJson = async function () {
     const url = 'https://raw.githubusercontent.com/lulumalik/choropleth/master/public/us.json';
     const res = await fetch(url);
@@ -62,7 +67,7 @@ function openDetail(e) {
         layer.bringToFront();
     }
 
-    info.update(layer.feature.properties);
+    // info.update(layer.feature.properties);
 }
 
 //remove mark style
@@ -76,37 +81,117 @@ function removeMark(e) {
         fillOpacity: 0.7
     });
 
-    info.update();
+    // info.onAdd('');
+    // info.update();
 }
 
 
-// custom card detail 
-var info = L.control();
+// // custom card detail 
+// var info = L.control();
 
-info.onAdd = function (map) {
-    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-    this.update();
-    return this._div;
-};
+// info.onAdd = function (map) {
+//     this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+//     this.update();
+//     return this._div;
+// };
 
-// update control properties
-info.update = function (property) {
-    this._div.innerHTML = '<h4>US Population Density</h4>' + (property ?
-        '<b>' + property.name + '</b><br />' + property.density + ' people / mi<sup>2</sup>'
-        : '');
-};
+// // update control properties
+// info.update = function (property) {
+//     this._div.innerHTML = '<h4>US Population Density</h4>' + (property ?
+//         '<b>' + property.name + '</b><br />' + property.density + ' people / mi<sup>2</sup>'
+//         : '');
+// };
 
-info.addTo(map);
+// info.addTo(map);
 
 
 
 //Layer Control
-// L.control.layers({
-//     'Streets': L.mapbox.styleLayer('mapbox://styles/mapbox/streets-v11').addTo(map),
-//     'Light': L.mapbox.styleLayer('mapbox://styles/mapbox/light-v10'),
-//     'Outdoors': L.mapbox.styleLayer('mapbox://styles/mapbox/outdoors-v11')
-// }).addTo(map);
+L.control.layers({
+    'Streets': L.mapbox.styleLayer('mapbox://styles/mapbox/streets-v11'),
+    'Light': L.mapbox.styleLayer('mapbox://styles/mapbox/light-v10'),
+    'Outdoors': L.mapbox.styleLayer('mapbox://styles/mapbox/outdoors-v11')
+}).addTo(map);
 
 
+// search box
+const searchInput = document.getElementById('search');
+const closeBtn = document.querySelector('.fa-times');
+const serach_API = 'https://api.openrouteservice.org/geocode/search?api_key=5b3ce3597851110001cf6248689a30945e9841c285692e8387d3e58e&text=';
+
+//get data
+async function getTextData(loc) {
+    const res = await fetch(loc);
+    const data = await res.json();
+
+    showListLocation(data.features);
+}
+
+function showListLocation(links) {
+    let searchLinks = document.querySelector('.search-links');
+    searchLinks.innerHTML = '';
+    links.forEach((link) => {
+        const linkEl = document.createElement('div');
+        linkEl.classList.add('link');
+        linkEl.innerHTML = `
+            <p class="par">${link.properties.name}</a>, ${link.properties.region_a}, ${link.properties.country}</p>
+            <small>${link.properties.county}, ${link.properties.region}, ${link.properties.country}</small>
+            <small class="hidden">${link.geometry.coordinates}</small>
+        `;
+
+        searchLinks.appendChild(linkEl);
+    });
 
 
+    // Create Marker
+    const linkTobe = document.querySelectorAll('.link');
+    linkTobe.forEach(linkT => {
+        linkT.addEventListener('click', (e) => {
+            removeListLocation();
+            let elements = e.target;
+            let value = elements.querySelector('.hidden').textContent.split(",");
+            let latLang = value.reverse();
+            addMarker(latLang);
+        });
+    });
+
+    function addMarker(coor) {
+
+        var markIcon = L.icon({
+            iconUrl: 'https://www.pngkey.com/png/full/13-137571_map-marker-png-hd-marker-icon.png',
+            iconSize: [28, 40]
+        });
+
+        //Base Marker
+        var redMarker = L.marker(coor, { icon: markIcon, draggable: true });
+        redMarker.bindPopup(`<h2 style="text-align: center">`).openPopup().addTo(map);
+    }
+
+    function removeListLocation() {
+        let searchLinks = document.querySelector('.search-links');
+        searchLinks.innerHTML = '';
+        searchInput.value = '';
+    }
+
+
+    // const closeBtn = document.querySelector('.fa-times');
+    // closeBtn.style.display = 'block';
+
+    // closeBtn.addEventListener('click', () => {
+    //     let searchLinks = document.querySelector('.search-links');
+    //     searchLinks.remove();
+    // });
+
+}
+
+searchInput.addEventListener('keydown', (e) => {
+    const location = e.target.value;
+
+    if (location !== '' && location.length > 4) {
+        getTextData(serach_API + location);
+    }
+});
+
+// const str = "Bandung, JR, Indonesia";
+// let wordK = str.toLowerCase().replace(/,/g, "").split(" ")[0];
+// console.log(wordK);
