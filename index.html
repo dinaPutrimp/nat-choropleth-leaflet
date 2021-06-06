@@ -15,12 +15,24 @@
 </head>
 
 <body>
-    <div id="map">
-    </div>
+    <div id="map"></div>
+    <nav>
+        <i class="fas fa-times" id="close-btn"></i>
+        <h3>Enter Your Desire Location Here!</h3>
+        <form id="form">
+            <div class="start-container">
+                <input type="text" class="start" a id="start" placeholder="Starting place...">
+            </div>
+            <div class="des-container">
+                <input type="text" class="destination" id="destination" placeholder="Destination">
+            </div>
+            <button class="go">Go</button>
+        </form>
+    </nav>
     <div class="search-container">
-        <input type="text" id="search" placeholder="Enter your region..">
-        <div class="search-links">
-            <!-- <i class="fas fa-times"></i> -->
+        <div class="nav">
+            <i class="fas fa-bars"></i>
+            <input type="text" id="search" placeholder="Enter Location">
         </div>
     </div>
 
