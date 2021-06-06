@@ -1,23 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+*{
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     padding: 0;
     overflow: hidden;
     min-height: 100vh;
+    font-family: 'Roboto', sans-serif;
 }
 
 #map {
-    position: absolute;
-    top: 0;
-    bottom: 0;
     width: 100%;
-    /* z-index: -1; */
+    height: 100vh;
+    position: relative;
 }
 
 .info {
     position: absolute;
     top: 50px;
     right: 10px;
-    height: 60px;
+    height: 70px;
     width: 200px;
     padding: 6px 8px;
     font: 14px/16px Arial, Helvetica, sans-serif;
@@ -25,7 +30,7 @@ body {
     background: rgba(255, 255, 255, 0.8);
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
-    z-index: 1000;
+    z-index: 999;
 }
 
 .info h4 {
@@ -33,33 +38,85 @@ body {
     color: #777;
 }
 
+nav{
+    position: absolute;
+    width: 25vw;
+    height: 50vh;
+    left: 0;
+    top: 0;
+    padding: 30px;
+    border-radius: 5px;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    background-color: white;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 200;
+}
+
+nav.active{
+    transform: translateX(0%);
+    transition: transform 0.3s ease-in-out;
+}
+
+.nav{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: white;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.fa-bars{
+    font-size: 1.5rem;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+#close-btn{
+    cursor: pointer;
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 1.5rem;
+}
+
 .search-container{
     position: absolute;
     left: 10px;
     top: 10px;
-    width: 450px;
-    z-index: 100;
+    width: 37%;
+    z-index: 999;
+    transform: translateX(0);
+    transition: transform 0.3s linear;
 }
 
-.search-container input{
+.search-container.active{
+    transform: translateX(30vw);
+}
+
+#search{
     width: 100%;
-    height: 25px;
     padding: 10px;
-    border: none;
+    border: 1px solid #ddd;
     border-radius: 5px;
-    margin-bottom: 5px;
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
 }
 
-.search-container input:focus{
+#search:focus{
     outline: none;
 }
 
 .search-links{
-    width: 104%;
+    width: 100%;
     height: 420px;
     border-radius: 3px;
     overflow: auto;
-    position: relative;
 }
 
 .link{
@@ -67,6 +124,7 @@ body {
     padding: 10px 20px;
     cursor: pointer;
     line-height: 5px;
+    font-family: 'Roboto', sans-serif;
 }
 
 .link .location-name{
@@ -77,16 +135,63 @@ body {
 .hidden{
     display: none;
 }
-.fa-times{
-    position: absolute;
-    top: 5px;
-    right: 10px;
-    cursor: pointer;
-    padding: 8px 10px;
-    z-index: 1000;
-} 
 
-/* .fa-times:hover{
-    background-color: rgba(0, 0, 0, 0.1);
-    border-radius: 50%;
+.leaflet-control-zoom{
+    position: absolute;
+    top: 60px;
+    transform: translateY(0);
+    transition: transform 0.3s linear;
+    z-index: 1;
+}
+
+.leaflet-control-zoom.move{
+    top: 500px;
+    transform: top 0.3s linear;
+}
+
+.leaflet-control-zoom.active{
+    transform: translateY(300px);
+    transition: transform 0.3s linear;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+form input{
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-family: 'Roboto', sans-serif;
+}
+
+form input:focus{
+    outline: none;
+}
+
+.go{
+    padding: 12px 50px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    background-color: #008256;
+    color: white;
+    box-shadow: 1px 4px 10px rgba(0, 0, 0, 0.2);
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+}
+
+.go:active{
+    transform: scale(0.98);
+}
+
+@media(max-width: 768px){
+    .search-container{
+        width: 70%;
+    }
+
 }
