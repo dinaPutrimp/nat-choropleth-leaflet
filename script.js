@@ -4,7 +4,7 @@ var map = L.mapbox.map('map')
     .addLayer(L.mapbox.styleLayer('mapbox://styles/mapbox/streets-v11'));
 
 // control position
-map.zoomControl.setPosition('bottomleft');
+// map.zoomControl.setPosition('bottomleft');
 
 
 
@@ -113,8 +113,14 @@ L.control.layers({
 
 // search box
 const searchInput = document.getElementById('search');
-const closeBtn = document.querySelector('.fa-times');
 const serach_API = 'https://api.openrouteservice.org/geocode/search?api_key=5b3ce3597851110001cf6248689a30945e9841c285692e8387d3e58e&text=';
+const direction_API = `https://api.openrouteservice.org/v2/directions/driving-car?api_key=5b3ce3597851110001cf6248689a30945e9841c285692e8387d3e58e&start=8.681495,49.41461&end=8.687872,49.420318`;
+const form = document.getElementById('form');
+const startPlace = document.getElementById('start');
+const destination = document.getElementById('destination');
+const searcContainer = document.querySelector('.search-container');
+let searchLinks = document.createElement('div');
+searchLinks.classList.add('search-links');
 
 //get data
 async function getTextData(loc) {
@@ -124,21 +130,22 @@ async function getTextData(loc) {
     showListLocation(data.features);
 }
 
+
 function showListLocation(links) {
-    let searchLinks = document.querySelector('.search-links');
     searchLinks.innerHTML = '';
     links.forEach((link) => {
         const linkEl = document.createElement('div');
         linkEl.classList.add('link');
         linkEl.innerHTML = `
-        <p>${link.properties.name}, ${link.properties.country}</p>
-        <small class="par">${link.properties.county}, ${link.properties.region}, ${link.properties.country}</small>
-        <small class="hidden">${link.geometry.coordinates}</small>
+                <p>${link.properties.name}, ${link.properties.country}</p>
+                <small class="par">${link.properties.county}, ${link.properties.region}, ${link.properties.country}</small>
+                <small class="hidden">${link.geometry.coordinates}</small>
         `;
 
         searchLinks.appendChild(linkEl);
     });
 
+    searcContainer.appendChild(searchLinks);
 
     // Create Marker
     const linkTobe = document.querySelectorAll('.link');
@@ -149,6 +156,7 @@ function showListLocation(links) {
             let textPop = elements.querySelector('.par').textContent;
             let value = elements.querySelector('.hidden').textContent.split(",");
             let latLang = value.reverse();
+            console.log(latLang)
             addMarker(latLang, textPop);
         });
     });
@@ -160,33 +168,47 @@ function showListLocation(links) {
     }
 
     function removeListLocation() {
-        searchLinks.innerHTML = '';
+        searchLinks.remove();
         searchInput.value = '';
     }
-
-
-    // const closeBtn = document.querySelector('.fa-times');
-    // closeBtn.style.display = 'block';
-
-    // closeBtn.addEventListener('click', () => {
-    //     let searchLinks = document.querySelector('.search-links');
-    //     searchLinks.remove();
-    // });
-
 }
 
-searchInput.addEventListener('keydown', (e) => {
-    const location = e.target.value;
 
-    if (location !== '' && location.length > 4) {
-        getTextData(serach_API + location);
+const hamburger = document.querySelector('.fa-bars');
+const closeb = document.getElementById('close-btn');
+const navSide = document.querySelector('nav');
+const navInput = document.querySelector('.nav');
+const zoomControl = document.querySelector('.leaflet-control-zoom');
+
+searchInput.addEventListener('keydown', (e) => {
+    const loc = e.target.value;
+
+    if (loc !== '' && loc.length > 4) {
+        getTextData(serach_API + loc);
+        zoomControl.classList.add('move');
     }
+
     document.body.onclick = () => {
-        if (location) {
-            let searchLinks = document.querySelector('.search-links');
-            searchLinks.innerHTML = '';
+        if (loc) {
+            searchLinks.remove();
             searchInput.value = '';
+            zoomControl.classList.remove('move');
         }
     }
 });
 
+
+// Toggle nav
+hamburger.addEventListener('click', () => {
+    navSide.classList.add('active');
+    searcContainer.classList.add('active');
+    zoomControl.classList.add('active');
+    navInput.style.opacity = '0';
+});
+
+closeb.addEventListener('click', () => {
+    navSide.classList.remove('active');
+    searcContainer.classList.remove('active');
+    zoomControl.classList.remove('active');
+    navInput.style.opacity = '1';
+});
