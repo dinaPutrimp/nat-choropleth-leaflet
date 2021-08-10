@@ -152,11 +152,9 @@ function showListLocation(links) {
     linkTobe.forEach(linkT => {
         linkT.addEventListener('click', (e) => {
             removeListLocation();
-            let elements = e.target;
-            let textPop = elements.querySelector('.par').textContent;
-            let value = elements.querySelector('.hidden').textContent.split(",");
+            let textPop = e.target.parentElement.children[1].innerText.split(",");
+            let value = e.target.parentElement.children[2].innerText.split(",");
             let latLang = value.reverse();
-            console.log(latLang)
             addMarker(latLang, textPop);
         });
     });
